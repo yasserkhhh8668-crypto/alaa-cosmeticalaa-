@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ألاء كوسمتيك</title>
+<style>
+:root{--bg:#fff5f8;--card:#fff;--tx:#3b0a1e;--mu:#8a5a6b;--ac:#9d174d;--ac2:#fff;--bd:#f6d5e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a0a12;--card:#2a1019;--tx:#fde7ef;--mu:#c79aae;--ac:#f472b6;--ac2:#3b0a1e;--bd:#4a1f31}}
+:root[data-theme="dark"]{--bg:#1a0a12;--card:#2a1019;--tx:#fde7ef;--mu:#c79aae;--ac:#f472b6;--ac2:#3b0a1e;--bd:#4a1f31}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,"Segoe UI",system-ui,sans-serif;line-height:1.5}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--bd);display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 14px;z-index:5}
+header h1{font-size:20px;margin:0;color:var(--ac)}header{border-bottom:3px solid #f9a8d4}
+button,select,input{font:inherit;color:inherit}
+.btn{background:var(--ac);color:var(--ac2);border:0;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:700}
+.btn.o{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+select,input{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px;width:100%}
+.hd select{width:auto}
+main{max-width:960px;margin:0 auto;padding:14px}
+.cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.cats button{white-space:nowrap}
+.cats .on{background:var(--ac);color:var(--ac2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}
+.p{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.p .em{font-size:44px;text-align:center}
+.p b{font-size:14px}.pr{color:var(--ac);font-weight:700}
+.panel{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.panel.show{display:flex;justify-content:flex-end}
+.sheet{background:var(--card);width:min(440px,100%);height:100%;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--bd);padding:6px 0}
+.up{background:rgba(244,114,182,.15);border:1px dashed var(--ac);border-radius:10px;padding:10px}
+.ban{background:var(--ac);color:var(--ac2);padding:10px;border-radius:10px;margin-bottom:10px;display:none;justify-content:space-between;gap:8px;align-items:center}
+label{font-size:13px;color:var(--mu)}
+.hp{position:absolute;left:-9999px;opacity:0}
+.err{color:#dc2626;font-size:13px;min-height:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px solid var(--bd);padding:4px;text-align:start}
+</style>
+</head>
+<body>
+<header class="hd">
+  <h1 id="t_name">🌸 ألاء كوسمتيك</h1>
+  <div style="display:flex;gap:6px;align-items:center">
+    <select id="lang" aria-label="language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select>
+    <button class="btn" id="cartBtn">🛒 <span id="cnt">0</span></button>
+  </div>
+</header>
+<main>
+  <div class="ban" id="ban"><span id="t_ban"></span><span><button class="btn o" id="resume"></button> <button class="btn o" id="dismiss">✕</button></span></div>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+  <p style="text-align:center;margin-top:24px"><button class="btn o" id="adminBtn">⚙️ <span id="t_admin"></span></button></p>
+</main>
+
+<div class="panel" id="cartP"><div class="sheet">
+  <div class="row"><b id="t_cart"></b><button class="btn o" data-close>✕</button></div>
+  <div id="items"></div>
+  <div id="upsell"></div>
+  <div class="row"><b id="t_total"></b><b id="total"></b></div>
+  <label id="l_name"></label><input id="f_name" autocomplete="name">
+  <label id="l_phone"></label><input id="f_phone" inputmode="tel" placeholder="05 / 06 / 07 ..." autocomplete="tel">
+  <label id="l_wil"></label><select id="f_wil"></select>
+  <label id="l_type"></label><select id="f_type"><option value="home"></option><option value="desk"></option></select>
+  <label id="l_co"></label><select id="f_co"><option>Yalidine</option><option>ZR Express</option><option>Ecotrack</option><option>Maystro</option></select>
+  <label id="l_addr"></label><input id="f_addr">
+  <input class="hp" id="f_web" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="row"><span id="t_ship"></span><span id="ship"></span></div>
+  <div class="err" id="err"></div>
+  <button class="btn" id="order"></button>
+</div></div>
+
+<div class="panel" id="adminP"><div class="sheet">
+  <div class="row"><b id="t_adm2"></b><button class="btn o" data-close>✕</button></div>
+  <h4 id="t_ord"></h4><div style="overflow-x:auto"><table id="ordT"></table></div>
+  <h4 id="t_ab"></h4><div style="overflow-x:auto"><table id="abT"></table></div>
+</div></div>
+
+<script>
+var I={ar:{name:"🌸 ألاء كوسمتيك",all:"الكل",add:"أضف للسلة",cart:"سلة المشتريات",total:"المجموع",ship:"التوصيل",nm:"الاسم الكامل",ph:"رقم الهاتف",wil:"الولاية",ty:"نوع التوصيل",home:"للمنزل",desk:"للمكتب",co:"شركة التوصيل",ad:"العنوان",order:"تأكيد الطلب",empty:"السلة فارغة",ban:"لديك طلب لم يكتمل",resume:"أكمل الطلب",admin:"لوحة التحكم",ord:"الطلبات",ab:"الطلبات المتروكة",up:"أضف بسعر خاص:",bad:"تحقق من الاسم والهاتف والولاية",dup:"تم إرسال طلب مماثل مؤخراً، انتظر قليلاً",ok:"تم تسجيل طلبك ✅ سنتصل بك قريباً",cur:"دج",cols:["الاسم","الهاتف","الولاية","المبلغ"]},
+fr:{name:"🌸 Alaa Cosmetic",all:"Tout",add:"Ajouter",cart:"Panier",total:"Total",ship:"Livraison",nm:"Nom complet",ph:"Téléphone",wil:"Wilaya",ty:"Type de livraison",home:"À domicile",desk:"Stop desk",co:"Société de livraison",ad:"Adresse",order:"Confirmer la commande",empty:"Panier vide",ban:"Vous avez une commande inachevée",resume:"Reprendre",admin:"Tableau de bord",ord:"Commandes",ab:"Commandes abandonnées",up:"Ajoutez à prix spécial :",bad:"Vérifiez nom, téléphone et wilaya",dup:"Commande similaire déjà envoyée, patientez",ok:"Commande enregistrée ✅ Nous vous appelons bientôt",cur:"DA",cols:["Nom","Tél","Wilaya","Montant"]},
+en:{name:"🌸 Alaa Cosmetic",all:"All",add:"Add to cart",cart:"Cart",total:"Total",ship:"Shipping",nm:"Full name",ph:"Phone",wil:"Wilaya",ty:"Delivery type",home:"Home",desk:"Stop desk",co:"Delivery company",ad:"Address",order:"Place order",empty:"Cart is empty",ban:"You have an unfinished order",resume:"Resume",admin:"Dashboard",ord:"Orders",ab:"Abandoned orders",up:"Add at a special price:",bad:"Check name, phone and wilaya",dup:"Similar order sent recently, please wait",ok:"Order received ✅ We will call you soon",cur:"DZD",cols:["Name","Phone","Wilaya","Amount"]}};
+var CATS={ar:["العناية بالبشرة","العناية بالشعر","المكياج","العطور"],fr:["Soin de la peau","Soin des cheveux","Maquillage","Parfums"],en:["Skin care","Hair care","Makeup","Perfumes"]};
+var P=[{id:1,c:0,e:"🧴",n:{ar:"سيروم فيتامين C",fr:"Sérum vitamine C",en:"Vitamin C serum"},p:2800},{id:2,c:0,e:"🧼",n:{ar:"غسول الوجه",fr:"Nettoyant visage",en:"Face cleanser"},p:1500},{id:3,c:1,e:"💆‍♀️",n:{ar:"ماسك الشعر المغذي",fr:"Masque capillaire",en:"Nourishing hair mask"},p:2200},{id:4,c:1,e:"🌿",n:{ar:"زيت الشعر الطبيعي",fr:"Huile capillaire",en:"Natural hair oil"},p:1800},{id:5,c:2,e:"💄",n:{ar:"أحمر شفاه مات",fr:"Rouge à lèvres mat",en:"Matte lipstick"},p:1200},{id:6,c:3,e:"🌸",n:{ar:"عطر زهري 50مل",fr:"Parfum floral 50ml",en:"Floral perfume 50ml"},p:3500}];
+var UP={id:6,disc:0.2};
+var W=["أدرار","الشلف","الأغواط","أم البواقي","باتنة","بجاية","بسكرة","بشار","البليدة","البويرة","تمنراست","تبسة","تلمسان","تيارت","تيزي وزو","الجزائر","الجلفة","جيجل","سطيف","سعيدة","سكيكدة","سيدي بلعباس","عنابة","قالمة","قسنطينة","المدية","مستغانم","المسيلة","معسكر","ورقلة","وهران","البيض","إليزي","برج بوعريريج","بومرداس","الطارف","تندوف","تيسمسيلت","الوادي","خنشلة","سوق أهراس","تيبازة","ميلة","عين الدفلى","النعامة","عين تموشنت","غرداية","غليزان"];
+var L="ar",cat=-1,cart={},T0=Date.now();
+var $=function(i){return document.getElementById(i)};
+function st(k,v){try{if(v===undefined){return JSON.parse(localStorage.getItem(k)||"null")}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function price(p){return p.id===UP.id&&cart[UP.id]&&cart[UP.id].up?Math.round(p.p*(1-UP.disc)):p.p}
+function shipCost(){var w=$("f_wil").selectedIndex;var base=w===15||w===8?400:600;return(Object.keys(cart).length?base+($("f_type").value==="desk"?-150:250):0)}
+function sub(){var s=0;for(var k in cart){var p=P.find(function(x){return x.id==k});s+=(cart[k].up?Math.round(p.p*(1-UP.disc)):p.p)*cart[k].q}return s}
+function render(){
+  var t=I[L];document.documentElement.lang=L;document.documentElement.dir=L==="ar"?"rtl":"ltr";
+  $("t_name").textContent=t.name;$("t_cart").textContent=t.cart;$("t_total").textContent=t.total;$("t_ship").textContent=t.ship;
+  $("l_name").textContent=t.nm;$("l_phone").textContent=t.ph;$("l_wil").textContent=t.wil;$("l_type").textContent=t.ty;$("l_co").textContent=t.co;$("l_addr").textContent=t.ad;
+  $("f_type").options[0].text=t.home;$("f_type").options[1].text=t.desk;$("order").textContent=t.order;$("t_ban").textContent=t.ban;$("resume").textContent=t.resume;
+  $("t_admin").textContent=t.admin;$("t_adm2").textContent=t.admin;$("t_ord").textContent=t.ord;$("t_ab").textContent=t.ab;
+  var sel=$("f_wil").selectedIndex;$("f_wil").innerHTML=W.map(function(w,i){return"<option>"+(i+1)+" - "+w+"</option>"}).join("");$("f_wil").selectedIndex=Math.max(sel,0);
+  $("cats").innerHTML=[t.all].concat(CATS[L]).map(function(c,i){return'<button class="btn o'+(cat===i-1?" on":"")+'" data-c="'+(i-1)+'">'+c+"</button>"}).join("");
+  $("grid").innerHTML=P.filter(function(p){return cat<0||p.c===cat}).map(function(p){return'<div class="p"><div class="em">'+p.e+"</div><b>"+p.n[L]+'</b><span class="pr">'+p.p+" "+t.cur+'</span><button class="btn" data-a="'+p.id+'">'+t.add+"</button></div>"}).join("");
+  var ks=Object.keys(cart);$("cnt").textContent=ks.reduce(function(a,k){return a+cart[k].q},0);
+  $("items").innerHTML=ks.length?ks.map(function(k){var p=P.find(function(x){return x.id==k});return'<div class="row"><span>'+p.e+" "+p.n[L]+" ×"+cart[k].q+'</span><span>'+price(p)*cart[k].q+' <button class="btn o" data-r="'+k+'">✕</button></span></div>'}).join(""):"<p>"+t.empty+"</p>";
+  var u=P.find(function(x){return x.id===UP.id});
+  $("upsell").innerHTML=ks.length&&!cart[UP.id]?'<div class="up">🎁 '+t.up+" <b>"+u.n[L]+"</b> "+Math.round(u.p*(1-UP.disc))+" "+t.cur+' <button class="btn" data-u="1">+</button></div>':"";
+  $("ship").textContent=shipCost()+" "+t.cur;$("total").textContent=(sub()+shipCost())+" "+t.cur;
+}
+function saveDraft(){var n=$("f_name").value.trim(),ph=$("f_phone").value.trim();if(Object.keys(cart).length&&(ph.length>=6||n)){st("draft",{name:n,phone:ph,wil:$("f_wil").value,cart:cart,t:Date.now()});var a=st("aband")||[];a=a.filter(function(x){return x.phone!==ph});a.push({name:n,phone:ph,wil:$("f_wil").value,amt:sub()});st("aband",a)}}
+document.addEventListener("click",function(e){
+  var d=e.target.dataset||{};
+  if(d.c!==undefined){cat=+d.c;render()}
+  if(d.a){var k=d.a;cart[k]=cart[k]||{q:0};cart[k].q++;render();$("cartP").classList.add("show")}
+  if(d.r){delete cart[d.r];render()}
+  if(d.u){cart[UP.id]={q:1,up:true};render()}
+  if(e.target.hasAttribute("data-close")||e.target.classList.contains("panel"))document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("show")});
+});
+$("cartBtn").onclick=function(){$("cartP").classList.add("show")};
+$("lang").onchange=function(){L=this.value;render()};
+["f_name","f_phone"].forEach(function(i){$(i).addEventListener("blur",saveDraft)});
+$("f_wil").onchange=$("f_type").onchange=render;
+$("order").onclick=function(){
+  var t=I[L],n=$("f_name").value.trim(),ph=$("f_phone").value.replace(/[\s.-]/g,"");
+  var okPh=/^0[567]\d{8}$/.test(ph);
+  if($("f_web").value||Date.now()-T0<3000){return}
+  if(!n||n.length<3||!okPh||!Object.keys(cart).length){$("err").textContent=t.bad;return}
+  var o=st("orders")||[];
+  if(o.some(function(x){return x.phone===ph&&Date.now()-x.t<3600000})){$("err").textContent=t.dup;return}
+  var rec={name:n,phone:ph,wil:$("f_wil").value,co:$("f_co").value,type:$("f_type").value,addr:$("f_addr").value,amt:sub()+shipCost(),cart:cart,t:Date.now()};
+  o.push(rec);st("orders",o);
+  st("aband",(st("aband")||[]).filter(function(x){return x.phone!==ph}));st("draft",null);
+  cart={};$("err").textContent=t.ok;$("ban").style.display="none";render();
+};
+$("adminBtn").onclick=function(){
+  var t=I[L],h="<tr>"+t.cols.map(function(c){return"<th>"+c+"</th>"}).join("")+"</tr>";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function rows(a){return(a||[]).map(function(x){return"<tr><td>"+esc(x.name)+"</td><td>"+esc(x.phone)+"</td><td>"+esc(x.wil)+"</td><td>"+esc(x.amt)+"</td></tr>"}).join("")}
+  $("ordT").innerHTML=h+rows(st("orders"));$("abT").innerHTML=h+rows(st("aband"));$("adminP").classList.add("show");
+};
+$("resume").onclick=function(){var d=st("draft");if(d){cart=d.cart;$("f_name").value=d.name;$("f_phone").value=d.phone;render();$("cartP").classList.add("show")}$("ban").style.display="none"};
+$("dismiss").onclick=function(){$("ban").style.display="none"};
+(function(){var d=st("draft");if(d&&d.cart&&Object.keys(d.cart).length)$("ban").style.display="flex";render()})();
+</script>
+</body>
+</html>
